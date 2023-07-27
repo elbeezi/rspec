@@ -97,9 +97,7 @@
 // Terraform
 * AWS API Gateway
 * AWS OpenSearch
-* Azure Database for MySQL
-* Azure Database for PostgreSQL
-* Azure MSSQL
+* Azure Databases
 * Azure Storage Accounts
 * GCP Load Balancers
 // CDK
