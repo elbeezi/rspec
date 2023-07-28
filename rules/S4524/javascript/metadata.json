@@ -1,5 +1,5 @@
 {
-  "title": "\"default\" clauses should be last",
+  "title": "The \"default\" clause should be last",
   "defaultQualityProfiles": [
     "Sonar way"
   ],
