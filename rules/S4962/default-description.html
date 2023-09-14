@@ -1,0 +1,74 @@
+<div class="sect1">
+<h2 id="_description">Description</h2>
+<div class="sectionbody">
+
+</div>
+</div>
+<div class="sect1">
+<h2 id="_why_is_this_an_issue">Why is this an issue?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Before C&#43;&#43;11, the only way to refer to a null pointer was by using the integer literal <code>0</code>, which created ambiguity with regard to whether a pointer or an integer was intended. Even with the <code>NULL</code> macro, the underlying value is still <code>0</code>.</p>
+</div>
+<div class="paragraph">
+<p>C&#43;&#43;11 introduced the keyword <code>nullptr</code>, which is unambiguous and should be used systematically.</p>
+</div>
+<div class="sect2">
+<h3 id="_noncompliant_code_example">Noncompliant code example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-cpp" data-lang="cpp">void f(char *c);
+void g(int i);
+void h()
+{
+    f(0); // Noncompliant
+    f(NULL); // Noncompliant
+    g(0); // Compliant, a real integer
+    g(NULL); // Noncompliant, NULL should not be used for a real integer
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_compliant_solution">Compliant solution</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-cpp" data-lang="cpp">void f(char *c);
+void g(int i);
+void h()
+{
+    f(nullptr); // Compliant
+    g(0);  // Compliant, a real integer
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_resources">Resources</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://github.com/isocpp/CppCoreGuidelines/blob/036324/CppCoreGuidelines.md#es47-use-nullptr-rather-than-0-or-null">C&#43;&#43; Core Guidelines ES.47</a> - Use nullptr rather than 0 or NULL</p>
+</li>
+</ul>
+</div>
+<hr>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_implementation_specification">Implementation Specification</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>(visible only on this page)</p>
+</div>
+<div class="sect2">
+<h3 id="_message">Message</h3>
+<div class="paragraph">
+<p>Use the "nullptr" literal.</p>
+</div>
+</div>
+</div>
+</div>

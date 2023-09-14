@@ -1,0 +1,74 @@
+<div class="sect1">
+<h2 id="_description">Description</h2>
+<div class="sectionbody">
+
+</div>
+</div>
+<div class="sect1">
+<h2 id="_why_is_this_an_issue">Why is this an issue?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Generic types shouldn&#8217;t be used raw (without type parameters) in variable declarations or return values. Doing so bypasses generic type checking, and defers the catch of unsafe code to runtime.</p>
+</div>
+<div class="sect2">
+<h3 id="_noncompliant_code_example">Noncompliant code example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">List myList; // Noncompliant
+Set mySet; // Noncompliant</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_compliant_solution">Compliant solution</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">List&lt;String&gt; myList;
+Set&lt;? extends Number&gt; mySet;</code></pre>
+</div>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_implementation_specification">Implementation Specification</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>(visible only on this page)</p>
+</div>
+<div class="sect2">
+<h3 id="_message">Message</h3>
+<div class="paragraph">
+<p>Provide the parametrised type for this generic.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_highlighting">Highlighting</h3>
+<div class="paragraph">
+<p>type name</p>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_comments_and_links">Comments And Links</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>(visible only on this page)</p>
+</div>
+<div class="sect2">
+<h3 id="_on_31_oct_2018_093537_nicolas_peru_wrote">on 31 Oct 2018, 09:35:37 Nicolas Peru wrote:</h3>
+<div class="paragraph">
+<p>\[~alexandre.gigleux] I would suggest title to be reworked to : Don&#8217;t use raw types. The wording seems dodgy.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_on_31_oct_2018_123109_ann_campbell_wrote">on 31 Oct 2018, 12:31:09 Ann Campbell wrote:</h3>
+<div class="paragraph">
+<p>"Raw types should not be used"?</p>
+</div>
+</div>
+</div>
+</div>

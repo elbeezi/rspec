@@ -1,0 +1,67 @@
+<div class="sect1">
+<h2 id="_description">Description</h2>
+<div class="sectionbody">
+
+</div>
+</div>
+<div class="sect1">
+<h2 id="_why_is_this_an_issue">Why is this an issue?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Java Collections framework defines interfaces such as <code>java.util.List</code> or <code>java.util.Map</code>. Several implementation classes are provided for each of those interfaces to fill different needs: some of the implementations guarantee a few given performance characteristics, some others ensure a given behavior, for example immutability.</p>
+</div>
+<div class="paragraph">
+<p>Among the methods defined by the interfaces of the Collections framework, some are declared as "optional": an implementation class may choose to throw an <code>UnsupportedOperationException</code> when one of those methods is called. For example, <code>java.util.Collections.emptyList()</code> returns an implementation of <code>java.util.List</code> which is documented as "immutable": calling the <code>add</code> method on this object triggers an <code>UnsupportedOperationException</code>.</p>
+</div>
+<div class="paragraph">
+<p>When calling one of the "optional" methods, a developer should therefore make sure that the implementation class on which the call is made indeed supports this method.</p>
+</div>
+<div class="sect2">
+<h3 id="_noncompliant_code_example">Noncompliant code example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">List&lt;String&gt; list = Collections.emptyList();
+if (someCondition) {
+  list.add("hello"); // Noncompliant; throws an UnsupportedOperationException
+}
+return list;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_compliant_solution">Compliant solution</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">List&lt;String&gt; list = new ArrayList&lt;&gt;();
+if (someCondition) {
+  list.add("hello");
+}
+return list;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>or</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">if (someCondition) {
+  return Collections.singletonList("hello");
+}
+return Collections.emptyList();</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_resources">Resources</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://docs.oracle.com/javase/8/docs/technotes/guides/collections/overview.html">Collections Framework Overview</a> in the Java documentation</p>
+</li>
+</ul>
+</div>
+</div>
+</div>

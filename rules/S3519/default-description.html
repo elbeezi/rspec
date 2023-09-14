@@ -1,0 +1,224 @@
+<div class="sect1">
+<h2 id="_description">Description</h2>
+<div class="sectionbody">
+
+</div>
+</div>
+<div class="sect1">
+<h2 id="_why_is_this_an_issue">Why is this an issue?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Array overruns and buffer overflows happen when memory access accidentally goes beyond the boundary of the allocated array or buffer. These overreaching accesses cause some of the most damaging, and hard to track defects.</p>
+</div>
+<div class="sect2">
+<h3 id="_noncompliant_code_example">Noncompliant code example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-cpp" data-lang="cpp">int array[10];
+array[10] = 0; // Noncompliant: index should be between 0 &amp; 9
+
+char *buffer1 = (char *) malloc(100);
+char *buffer2 = (char *) malloc(50);
+memcpy(buffer2, buffer1, 100); // Noncompliant: buffer2 will overflow.</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_compliant_solution">Compliant solution</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-cpp" data-lang="cpp">int array[10];
+array[9] = 0;
+
+char *buffer1 = (char *) malloc(100);
+char *buffer2 = (char *) malloc(50);
+memcpy(buffer2, buffer1, 50);</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_resources">Resources</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://cwe.mitre.org/data/definitions/119">MITRE, CWE-119</a> - Improper Restriction of Operations within the Bounds of a Memory Buffer</p>
+</li>
+<li>
+<p><a href="https://cwe.mitre.org/data/definitions/131">MITRE, CWE-131</a> - Incorrect Calculation of Buffer Size</p>
+</li>
+<li>
+<p><a href="https://cwe.mitre.org/data/definitions/788">MITRE, CWE-788</a> - Access of Memory Location After End of Buffer</p>
+</li>
+<li>
+<p><a href="https://wiki.sei.cmu.edu/confluence/x/wtYxBQ">CERT, ARR30-C.</a> - Do not form or use out-of-bounds pointers or array subscripts</p>
+</li>
+<li>
+<p><a href="https://wiki.sei.cmu.edu/confluence/x/i3w-BQ">CERT, STR50-CPP.</a> - Guarantee that storage for strings has sufficient space for character data and the null terminator</p>
+</li>
+</ul>
+</div>
+<hr>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_implementation_specification">Implementation Specification</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>(visible only on this page)</p>
+</div>
+<div class="sect2">
+<h3 id="_message">Message</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>Review this array access; it is likely to be an overrun.</p>
+</li>
+<li>
+<p>Review this memory access; it is likely to create an overflow.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_highlighting">Highlighting</h3>
+<div class="paragraph">
+<p>Primary: Array access or function call</p>
+</div>
+<div class="paragraph">
+<p>Secondary: * Index value for arrays</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Length value for functions call</p>
+</li>
+<li>
+<p>For loop end condition if applicable</p>
+</li>
+</ul>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_comments_and_links">Comments And Links</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>(visible only on this page)</p>
+</div>
+<div class="paragraph">
+<p>Possible messages of the rule <a data-rspec-id="S3519" class="rspec-auto-link">S3519</a>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>alpha.security.ArrayBoundV2</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>void access_exceeds(void) {
+  int id_sequence[3];
+  id_sequence[0] = 123;
+  id_sequence[1] = 234;
+  id_sequence[2] = 345;
+  id_sequence[3] = 456; // Noncompliant: accessing out of bounds.
+  // Out of bound memory access (access exceeds upper limit of memory block)
+}
+void access_precedes(int x) {
+  int buf[100];
+  int *p = buf;
+  --p;
+  p[0] = 1; // Out of bound memory access (accessed memory precedes memory block)
+}
+int getchar(void);
+void access_tainted(void) {
+  int m = getchar();
+  Buffer[m] = 1; // Out of bound memory access (index is tainted)
+}</pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>alpha.security.ReturnPtrRange</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>int *test_idx_sym(int i) {
+  static int arr[10];
+  if (i != 40)
+    return arr;
+  return arr + i; // Returned pointer value points outside the original object
+}</pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>alpha.unix.cstring.OutOfBounds</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>char* my_calloc(int n) {
+  char *p = malloc(n);
+  memset(p, 0, n + /*null terminator*/1); // OOB: off by one
+  // Memory set function overflows the destination buffer
+  return p;
+}
+void memcpy1(void) {
+  char src[] = {1, 2, 3, 4};
+  char dst[10];
+  memcpy(dst, src, 5); // Memory copy function accesses out-of-bound array element
+}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Typical bugs:
+* Off-by-one bugs</p>
+</div>
+<div class="paragraph">
+<p>Mitigations (extra mile):</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>asan</p>
+</li>
+<li>
+<p>valgrind</p>
+</li>
+<li>
+<p>Use "bounded" alternative functions, such as <code>strncpy</code>.</p>
+</li>
+<li>
+<p>Compilation flags to harden the binary: FORTIFY_SOURCE, stack-canaries, ASLR</p>
+</li>
+<li>
+<p>fuzzing</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Clarification question regarding inclusion forthis link in [<a href="https://discuss.sonarsource.com/t/layc-2023-languages-team-updates/14242/31?u=tomasz_kaminski">discuss</a>.</p>
+</div>
+<div class="paragraph">
+<p>Possibly missing CWEs from rspec:
+* <a href="https://cwe.mitre.org/data/definitions/787.html" class="bare">https://cwe.mitre.org/data/definitions/787.html</a>
+* <a href="https://cwe.mitre.org/data/definitions/193.html" class="bare">https://cwe.mitre.org/data/definitions/193.html</a></p>
+</div>
+<div class="sect2">
+<h3 id="_is_related_to_s5782">is related to: <a data-rspec-id="S5782" class="rspec-auto-link">S5782</a></h3>
+
+</div>
+</div>
+</div>

@@ -1,0 +1,152 @@
+<div class="sect1">
+<h2 id="_description">Description</h2>
+<div class="sectionbody">
+
+</div>
+</div>
+<div class="sect1">
+<h2 id="_why_is_this_an_issue">Why is this an issue?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>An empty method is generally considered bad practice and can lead to confusion, readability, and maintenance issues.
+Empty methods bring no functionality and are misleading to others as they might think the method implementation fulfills a specific and identified requirement.</p>
+</div>
+<div class="paragraph">
+<p>Such methods should be avoided and possibly removed.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-vbnet" data-lang="vbnet">Sub DoSomething() ' Noncompliant
+End Sub</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>However, there are some cases where a method needs to be empty. In those cases, it is essential to minimize confusion and enhance clarity.</p>
+</div>
+<div class="paragraph">
+<p>Here are a few examples:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The method will never be implemented.</p>
+<div class="openblock">
+<div class="content">
+<div class="paragraph">
+<p>By throwing the <a href="https://learn.microsoft.com/en-us/dotnet/api/system.notsupportedexception"><code>NotSupportedException</code></a>, it makes clear the initial intention not to implement it in the future.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-vbnet" data-lang="vbnet">Sub DoSomething() ' Compliant
+    Throw New NotSupportedException
+End Sub</code></pre>
+</div>
+</div>
+</div>
+</div>
+</li>
+<li>
+<p>The method will be implemented in the future.</p>
+<div class="openblock">
+<div class="content">
+<div class="paragraph">
+<p>By throwing the <a href="https://learn.microsoft.com/en-us/dotnet/api/system.notimplementedexception"><code>NotImplementedException</code></a>, the initial intention to add an implementation in the future is clear.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-vbnet" data-lang="vbnet">Sub DoSomething() ' Compliant
+    Throw New NotImplementedException
+End Sub</code></pre>
+</div>
+</div>
+</div>
+</div>
+</li>
+<li>
+<p>The method implementation is empty intentionally.</p>
+<div class="openblock">
+<div class="content">
+<div class="paragraph">
+<p>In this case, it is important to put a comment explaining the reason for the empty implementation.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-vbnet" data-lang="vbnet">Sub DoSomething() ' Compliant
+    ' Do nothing because of X
+End Sub</code></pre>
+</div>
+</div>
+</div>
+</div>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="_exceptions">Exceptions</h3>
+<div class="paragraph">
+<p>The following empty methods are considered compliant:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>empty <code>Overridable</code> methods, as the implementation might not be required in the base class</p>
+</li>
+<li>
+<p>empty methods that override a <code>MustOverride</code> method as the implementation is mandatory for child class</p>
+</li>
+<li>
+<p>empty overrides in test assemblies for mocking purposes</p>
+</li>
+</ul>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_implementation_specification">Implementation Specification</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>(visible only on this page)</p>
+</div>
+<div class="sect2">
+<h3 id="_message">Message</h3>
+<div class="paragraph">
+<p>Add a nested comment explaining why this method is empty, throw a NotSupportedException or complete the implementation.</p>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_comments_and_links">Comments And Links</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>(visible only on this page)</p>
+</div>
+<div class="sect2">
+<h3 id="_relates_to_s3575">relates to: <a data-rspec-id="S3575" class="rspec-auto-link">S3575</a></h3>
+
+</div>
+<div class="sect2">
+<h3 id="_relates_to_s3050">relates to: <a data-rspec-id="S3050" class="rspec-auto-link">S3050</a></h3>
+
+</div>
+<div class="sect2">
+<h3 id="_is_related_to_s108">is related to: <a data-rspec-id="S108" class="rspec-auto-link">S108</a></h3>
+
+</div>
+<div class="sect2">
+<h3 id="_on_7_aug_2013_171231_freddy_mallet_wrote">on 7 Aug 2013, 17:12:31 Freddy Mallet wrote:</h3>
+<div class="paragraph">
+<p>Is implemented by http://jira.codehaus.org/browse/SONARJAVA-273</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_on_26_aug_2013_143316_dinesh_bolkensteyn_wrote">on 26 Aug 2013, 14:33:16 Dinesh Bolkensteyn wrote:</h3>
+<div class="paragraph">
+<p>As discussed, this rule should no longer apply to abstract classes to allow default visitor implementations for example</p>
+</div>
+</div>
+</div>
+</div>

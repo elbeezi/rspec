@@ -1,0 +1,84 @@
+<div class="sect1">
+<h2 id="_description">Description</h2>
+<div class="sectionbody">
+
+</div>
+</div>
+<div class="sect1">
+<h2 id="_why_is_this_an_issue">Why is this an issue?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>With regular expressions syntax, it&#8217;s possible to express the same thing in many ways. For example, to match a two-digit number, one could write <code>[0-9]{2,2}</code> or <code>\d{2}</code>. Latter is not only shorter in terms of expression length, but also easier to read and thus to maintain. This rule recommends to replace some bulky quantifiers and character classes with more concise equivalents:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>\d</code> for <code>[0-9]</code> and <code>\D</code> for <code>[^0-9]</code></p>
+</li>
+<li>
+<p><code>\w</code> for <code>[A-Za-z0-9_]</code> and <code>\W</code> for <code>[^A-Za-z0-9_]</code></p>
+</li>
+<li>
+<p><code>.</code> for character classes matching everything (e.g. <code>[\w\W]</code>, <code>[\d\D]</code>, or <code>[\s\S]</code> with <code>s</code> flag)</p>
+</li>
+<li>
+<p><code>x?</code> for <code>x{0,1}</code>, <code>x*</code> for <code>x{0,}</code>, <code>x+</code> for <code>x{1,}</code>, <code>x{N}</code> for <code>x{N,N}</code></p>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="_noncompliant_code_example">Noncompliant code example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-php" data-lang="php">"/[0-9]/" // Noncompliant - same as "/\d/"
+"/[^0-9]/" // Noncompliant - same as "/\D/"
+"/[A-Za-z0-9_]/" // Noncompliant - same as "/\w/"
+"/[\w\W]/" // Noncompliant - same as "/./"
+"/a{0,}/" // Noncompliant - same as "/a*/"</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_compliant_solution">Compliant solution</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-php" data-lang="php">"/\d/"
+"/\D/"
+"/\w/"
+"/./"
+"/a*/"</code></pre>
+</div>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_implementation_specification">Implementation Specification</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>(visible only on this page)</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_message">Message</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>For character classes: Replace this character class with "x".
+For quantifiers: Replace this quantifier with "x".</p>
+</div>
+<div class="paragraph">
+<p>(n should be dynamic and be the replacement we propose)</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_highlighting">Highlighting</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The character class or the quantifier.</p>
+</div>
+<hr>
+</div>
+</div>

@@ -1,0 +1,136 @@
+<div class="sect1">
+<h2 id="_description">Description</h2>
+<div class="sectionbody">
+
+</div>
+</div>
+<div class="sect1">
+<h2 id="_why_is_this_an_issue">Why is this an issue?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>TLS configuration of Google Cloud load balancers is defined through SSL policies. There are three managed profiles to choose from: <code>COMPATIBLE</code> (default), <code>MODERN</code> and <code>RESTRICTED</code>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The <code>RESTRICTED</code> profile relies only on secure cipher suites and should be used by applications that require to comply with the highest security standards.</p>
+</li>
+<li>
+<p>The <code>MODERN</code> profile includes additional cipher suites that present security weaknesses like using the <code>SHA1</code> algorithm for signing.</p>
+</li>
+<li>
+<p>The <code>COMPATIBLE</code> profile offers the most common cipher suites and thus broader compatibility. Some of these use <code>SHA1</code> or <code>3DES</code> algorithms which are considered weak. Also, this profile includes cipher suites that rely on obsolete key-exchange mechanisms that don&#8217;t provide forward secrecy[<a href="https://en.wikipedia.org/wiki/Forward_secrecy" class="bare">https://en.wikipedia.org/wiki/Forward_secrecy</a>] as a feature.</p>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="_noncompliant_code_example">Noncompliant code example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terraform" data-lang="terraform">resource "google_compute_ssl_policy" "example" {
+  name            = "example"
+  min_tls_version = "TLS_1_2"
+  profile         = "COMPATIBLE" # Noncompliant
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_compliant_solution">Compliant solution</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-terraform" data-lang="terraform">resource "google_compute_ssl_policy" "example" {
+  name            = "example"
+  min_tls_version = "TLS_1_2"
+  profile         = "RESTRICTED"
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_resources">Resources</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://owasp.org/Top10/A02_2021-Cryptographic_Failures/">OWASP Top 10 2021 Category A2</a> - Cryptographic Failures</p>
+</li>
+<li>
+<p><a href="https://owasp.org/Top10/A05_2021-Security_Misconfiguration/">OWASP Top 10 2021 Category A5</a> - Security Misconfiguration</p>
+</li>
+<li>
+<p><a href="https://www.owasp.org/www-project-top-ten/2017/A3_2017-Sensitive_Data_Exposure">OWASP Top 10 2017 Category A3</a> - Sensitive Data Exposure</p>
+</li>
+<li>
+<p><a href="https://owasp.org/www-project-top-ten/2017/A6_2017-Security_Misconfiguration">OWASP Top 10 2017 Category A6</a> - Security Misconfiguration</p>
+</li>
+<li>
+<p><a href="https://cwe.mitre.org/data/definitions/327">MITRE, CWE-327</a> - Use of a Broken or Risky Cryptographic Algorithm</p>
+</li>
+<li>
+<p><a href="https://github.com/ssllabs/research/wiki/SSL-and-TLS-Deployment-Best-Practices#23-use-secure-cipher-suites">SSL and TLS Deployment Best Practices</a> - Use Secure Cipher Suites</p>
+</li>
+<li>
+<p><a href="https://cloud.google.com/load-balancing/docs/ssl-policies-concepts#defining_an_ssl_policy">Google Cloud Load Balancing</a> - Defining an SSL policy</p>
+</li>
+</ul>
+</div>
+<hr>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_implementation_specification">Implementation Specification</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>(visible only on this page)</p>
+</div>
+<div class="sect2">
+<h3 id="_message">Message</h3>
+<div class="sect3">
+<h4 id="_gcp">GCP</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>If <code>profile</code> is specified but has the wrong value</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Change this code to disable support of weak cipher suites.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>If <code>profile</code> is not specified at all</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Set profile to disable support of weak cipher suites.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_highlighting">Highlighting</h3>
+<div class="paragraph">
+<p>For <code>google_compute_ssl_policy</code>:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Highlight <code>profile</code> if it is specified but has the wrong value</p>
+</li>
+<li>
+<p>Highlight resource if <code>profile</code> is not specified at all</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>

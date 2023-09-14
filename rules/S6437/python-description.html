@@ -1,0 +1,210 @@
+<div class="sect1">
+<h2 id="_description">Description</h2>
+<div class="sectionbody">
+
+</div>
+</div>
+<div class="sect1">
+<h2 id="_why_is_this_an_issue">Why is this an issue?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A hard-coded secret has been found in your code. You should quickly list where
+this secret is used, revoke it, and then change it in every system that uses
+it.</p>
+</div>
+<div class="paragraph">
+<p>Passwords, secrets, and any type of credentials should only be used to
+authenticate a single entity (a person or a system).</p>
+</div>
+<div class="paragraph">
+<p>If you allow third parties to authenticate as another system or person, they
+can impersonate legitimate identities and undermine trust within the
+organization.<br>
+It does not matter if the impersonation is malicious: In either case, it is a
+clear breach of trust in the system, as the systems involved falsely assume
+that the authenticated entity is who it claims to be.<br>
+The consequences can be catastrophic.</p>
+</div>
+<div class="paragraph">
+<p>Keeping credentials in plain text in a code base is tantamount to sharing that
+password with anyone who has access to the source code and runtime servers.<br>
+Thus, it is a breach of trust, as these individuals have the ability to
+impersonate others.</p>
+</div>
+<div class="paragraph">
+<p>Secret management services are the most efficient tools to store credentials
+and protect the identities associated with them.<br>
+Cloud providers and on-premise services can be used for this purpose.</p>
+</div>
+<div class="paragraph">
+<p>If storing credentials in a secret data management service is not possible,
+follow these guidelines:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Do not store credentials in a file that an excessive number of people can access.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>For example, not in code, not in a spreadsheet, not on a sticky note, and not on a shared drive.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Use the production operating system to protect password access control.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>For example, in a file whose permissions are restricted and protected with chmod and chown.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="_noncompliant_code_example">Noncompliant code example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-python" data-lang="python">from requests_oauthlib.oauth2_session import OAuth2Session
+
+scope = ['https://www.api.example.com/auth/example.data']
+
+oauth = OAuth2Session(
+    'example_client_id',
+    redirect_uri='https://callback.example.com/uri',
+    scope=scope)
+
+token = oauth.fetch_token(
+        'https://api.example.com/o/oauth2/token',
+        client_secret='example_Password') # Noncompliant
+
+data = oauth.get('https://www.api.example.com/oauth2/v1/exampledata')</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_compliant_solution">Compliant solution</h3>
+<div class="paragraph">
+<p>Using <a href="https://github.com/awsdocs/aws-doc-sdk-examples/tree/main/javav2/example_code/secretsmanager">AWS Secrets Manager</a>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-python" data-lang="python">import boto3
+from requests_oauthlib.oauth2_session import OAuth2Session
+
+def get_client_secret():
+
+    session = boto3.session.Session()
+    client = session.client(service_name='secretsmanager', region_name='eu-west-1')
+
+    return client.get_secret_value(SecretId='example_oauth_secret_id')
+
+client_secret = get_client_secret()
+scope = ['https://www.api.example.com/auth/example.data']
+
+oauth = OAuth2Session(
+    'example_client_id',
+    redirect_uri='https://callback.example.com/uri',
+    scope=scope)
+
+token = oauth.fetch_token(
+        'https://api.example.com/o/oauth2/token',
+        client_secret=client_secret)
+
+data = oauth.get('https://www.api.example.com/oauth2/v1/exampledata')</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Using <a href="https://docs.microsoft.com/en-us/azure/key-vault/secrets/quick-create-java?tabs=azure-cli">Azure Key Vault Secret</a>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-python" data-lang="python">from azure.keyvault.secrets import SecretClient
+from azure.identity import DefaultAzureCredential
+
+def get_client_secret():
+    vault_uri = "https://example.vault.azure.net"
+    credential = DefaultAzureCredential()
+    client = SecretClient(vault_url=vault_uri, credential=credential)
+
+    return client.get_secret('example_oauth_secret_name')
+
+client_secret = get_client_secret()
+scope = ['https://www.api.example.com/auth/example.data']
+
+oauth = OAuth2Session(
+    'example_client_id',
+    redirect_uri='https://callback.example.com/uri',
+    scope=scope)
+
+token = oauth.fetch_token(
+        'https://api.example.com/o/oauth2/token',
+        client_secret=client_secret)
+
+data = oauth.get('https://www.api.example.com/oauth2/v1/exampledata')</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_resources">Resources</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://aws.amazon.com/fr/secrets-manager/">AWS</a> - Secret Manager</p>
+</li>
+<li>
+<p><a href="https://azure.microsoft.com/fr-fr/services/key-vault/">Azure</a> - Key Vault</p>
+</li>
+<li>
+<p><a href="https://cloud.google.com/secret-manager">GCP</a> - Secret Manager</p>
+</li>
+<li>
+<p><a href="https://www.vaultproject.io/">Hashicorp Vault</a> - Secret Management</p>
+</li>
+<li>
+<p><a href="https://owasp.org/Top10/A07_2021-Identification_and_Authentication_Failures/">OWASP Top 10 2021 Category A7</a> - Identification and Authentication Failures</p>
+</li>
+<li>
+<p><a href="https://www.owasp.org/index.php/Top_10-2017_A2-Broken_Authentication">OWASP Top 10 2017 Category A2</a> - Broken Authentication</p>
+</li>
+<li>
+<p><a href="https://cwe.mitre.org/data/definitions/798.html">MITRE, CWE-798</a> - Use of Hard-coded Credentials</p>
+</li>
+<li>
+<p><a href="https://cwe.mitre.org/data/definitions/259.html">MITRE, CWE-259</a> - Use of Hard-coded Password</p>
+</li>
+<li>
+<p><a href="https://wiki.sei.cmu.edu/confluence/x/OjdGBQ">CERT, MSC03-J.</a> - Never hard code sensitive information</p>
+</li>
+</ul>
+</div>
+<hr>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_implementation_specification">Implementation Specification</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>(visible only on this page)</p>
+</div>
+<div class="sect2">
+<h3 id="_message">Message</h3>
+<div class="paragraph">
+<p>Revoke and change this password, as it is compromised.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_highlighting">Highlighting</h3>
+<div class="paragraph">
+<p>Highlight the credential use and its initialization.</p>
+</div>
+<hr>
+</div>
+</div>
+</div>

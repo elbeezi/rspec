@@ -1,0 +1,86 @@
+<div class="sect1">
+<h2 id="_description">Description</h2>
+<div class="sectionbody">
+
+</div>
+</div>
+<div class="sect1">
+<h2 id="_why_is_this_an_issue">Why is this an issue?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Unnecessary casting expressions make the code harder to read and understand.</p>
+</div>
+<div class="sect2">
+<h3 id="_noncompliant_code_example">Noncompliant code example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-cpp" data-lang="cpp">int example(int i) {
+  int result = static_cast&lt;int&gt;(i + 42); // Noncompliant
+  return (int) result; // Noncompliant
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_compliant_solution">Compliant solution</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-cpp" data-lang="cpp">int example(int i) {
+ int result = i + 42;
+ return result;
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_exceptions">Exceptions</h3>
+<div class="paragraph">
+<p>In some rare cases, redundant cast might be justifiable. For example, when casting from platform dependant type; your cast might be redundant on one platform but not on the others.</p>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_implementation_specification">Implementation Specification</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>(visible only on this page)</p>
+</div>
+<div class="sect2">
+<h3 id="_message">Message</h3>
+<div class="paragraph">
+<p>Remove this unnecessary cast to "XXX".</p>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_comments_and_links">Comments And Links</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>(visible only on this page)</p>
+</div>
+<div class="sect2">
+<h3 id="_relates_to_s3247">relates to: <a data-rspec-id="S3247" class="rspec-auto-link">S3247</a></h3>
+
+</div>
+<div class="sect2">
+<h3 id="_on_30_jul_2014_211830_freddy_mallet_wrote">on 30 Jul 2014, 21:18:30 Freddy Mallet wrote:</h3>
+<div class="paragraph">
+<p>My feedback [~ann.campbell.2]:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>For me this rule only targets Java so the "Targeted Languages" field should be empty and <a data-rspec-id="S1905" class="rspec-auto-link">RSPEC-1905</a> and <a data-rspec-id="S1906" class="rspec-auto-link">RSPEC-1906</a> should be merged</p>
+</li>
+<li>
+<p>I would decrease the default severity to Minor</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>

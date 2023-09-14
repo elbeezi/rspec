@@ -1,0 +1,77 @@
+<div class="sect1">
+<h2 id="_description">Description</h2>
+<div class="sectionbody">
+
+</div>
+</div>
+<div class="sect1">
+<h2 id="_why_is_this_an_issue">Why is this an issue?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>ActiveMQ can send/receive JMS Object messages (named ObjectMessage in ActiveMQ context) to comply with JMS specification. Internally, ActiveMQ relies on Java serialization mechanism for marshaling/unmarshalling of the message payload. Deserialization based on data supplied by the user could lead to remote code execution attacks, where the structure of the serialized data is changed to modify the behavior of the object being unserialized.</p>
+</div>
+<div class="paragraph">
+<p>To limit the risk to be victim of such attack, ActiveMQ 5.12.2+ enforces developers to explicitly whitelist packages that can be exchanged using ObjectMessages.</p>
+</div>
+<div class="sect2">
+<h3 id="_noncompliant_code_example">Noncompliant code example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory("tcp://localhost:61616");
+factory.setTrustAllPackages(true); // Noncompliant
+
+ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory("tcp://localhost:61616");
+// no call to factory.setTrustedPackages(...);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_compliant_solution">Compliant solution</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory("tcp://localhost:61616");
+factory.setTrustedPackages(Arrays.asList("org.mypackage1", "org.mypackage2"));</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_resources">Resources</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://owasp.org/Top10/A08_2021-Software_and_Data_Integrity_Failures/">OWASP Top 10 2021 Category A8</a> - Software and Data Integrity Failures</p>
+</li>
+<li>
+<p><a href="https://owasp.org/www-project-top-ten/2017/A8_2017-Insecure_Deserialization">OWASP Top 10 2017 Category A8</a> - Insecure Deserialization</p>
+</li>
+<li>
+<p><a href="https://cwe.mitre.org/data/definitions/502">MITRE, CWE-502</a> - Deserialization of Untrusted Data</p>
+</li>
+<li>
+<p><a href="https://activemq.apache.org/objectmessage.html">ActiveMQ ObjectMessage Security Advisory</a></p>
+</li>
+<li>
+<p><a href="https://activemq.apache.org/security-advisories.data/CVE-2015-5254-announcement.txt">CVE-2015-5254</a></p>
+</li>
+</ul>
+</div>
+<hr>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_implementation_specification">Implementation Specification</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>(visible only on this page)</p>
+</div>
+<div class="sect2">
+<h3 id="_message">Message</h3>
+<div class="paragraph">
+<p>Explicitly define a whitelist of trusted packages with ActiveMQConnectionFactory.setTrustedPackages</p>
+</div>
+</div>
+</div>
+</div>

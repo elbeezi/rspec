@@ -1,0 +1,140 @@
+<div class="sect1">
+<h2 id="_description">Description</h2>
+<div class="sectionbody">
+
+</div>
+</div>
+<div class="sect1">
+<h2 id="_why_is_this_an_issue">Why is this an issue?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Sensitive data has been found in the Dockerfile or Docker image. The data
+should be considered breached.</p>
+</div>
+<div class="paragraph">
+<p>If malicious third parties can get a hold of such information, they could
+impersonate legitimate identities within the organization.<br>
+It is a clear breach of trust in the system, as the systems involved falsely
+assume that the authenticated entity is who it claims to be.<br>
+The consequences can be catastrophic.</p>
+</div>
+<div class="paragraph">
+<p>In Dockerfiles, secrets hard-coded, secrets passed through as variables or
+created at build-time will cause security risks. The secret information can be
+exposed either via the container environment itself, the image metadata or the
+build environment logs.</p>
+</div>
+<div class="paragraph">
+<p>Docker Buildkit&#8217;s secret mount options should be used when secrets have to be
+accessed at build time. For run-time secrets, best practices would recommend
+only setting them at runtime, for example with the <code>--env</code> option of the docker
+run command.</p>
+</div>
+<div class="paragraph">
+<p>Note that files exposing the secrets should be securely stored and not exposed
+to a large sphere. If possible, use a secret vault or another similar
+component. For example, <strong>Docker Swarm</strong> provides a <strong>secrets</strong> service that can be
+used to handle most confidential data.</p>
+</div>
+<div class="sect2">
+<h3 id="_noncompliant_code_example">Noncompliant code example</h3>
+<div class="paragraph">
+<p>The following code snippet demonstrates the creation of a file with a private
+key and a public key, which are then stored in the metadata of the container.<br>
+This is non-compliant, as the private key should not be exposed anywhere.</p>
+</div>
+<div class="paragraph">
+<p>Afterwards, the code uses a seemingly-hidden password which is actually leaked
+after the container is built.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-docker" data-lang="docker">FROM example
+
+# Noncompliant
+RUN ssh-keygen -N "passphrase" -t rsa -b 2048 -f /etc/ssh/rsa_key
+
+RUN /example.sh --ssh /etc/ssh/rsa_key</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_compliant_solution">Compliant solution</h3>
+<div class="paragraph">
+<p>For build-time secrets, use
+<a href="https://docs.docker.com/engine/reference/builder/#run---mounttypesecret">Buildkit&#8217;s secret mount type</a> instead:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-docker" data-lang="docker">FROM example
+
+RUN --mount=type=secret,id=ssh,target=/etc/ssh/rsa_key \
+    /example.sh --ssh /etc/ssh/rsa_key</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For runtime secrets, leave the environment variables empty in the Dockerfile.
+Then store the runtime secrets in an
+<a href="https://docs.docker.com/compose/env-file/">environment file</a> such as <code>.env</code> and
+then start the container with the
+<a href="https://docs.docker.com/engine/reference/commandline/run/#set-environment-variables&#8212;&#8203;e---env---env-file"><code>--env-file</code></a> argument:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-docker" data-lang="docker">docker run --env-file .env myImage</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_resources">Resources</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://docs.docker.com/engine/reference/builder/#run---mounttypesecret">Dockerfile reference</a> - RUN command secrets mount points</p>
+</li>
+<li>
+<p><a href="https://docs.docker.com/engine/swarm/secrets/">Docker documentation</a> - Manage sensitive data with Docker secrets</p>
+</li>
+<li>
+<p><a href="https://cwe.mitre.org/data/definitions/522.html">MITRE, CWE-522</a> - Insufficiently Protected Credentials</p>
+</li>
+<li>
+<p><a href="https://cwe.mitre.org/data/definitions/798.html">MITRE, CWE-798</a> - Use of Hard-coded Credentials</p>
+</li>
+</ul>
+</div>
+<hr>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_implementation_specification">Implementation Specification</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>(visible only on this page)</p>
+</div>
+<div class="sect2">
+<h3 id="_message">Message</h3>
+<div class="paragraph">
+<p>For secret generation:
+* Change this code not to store a secret in the image.</p>
+</div>
+<div class="paragraph">
+<p>For hardcoded secrets:
+* Revoke and change this secret, as it might be compromised.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_highlighting">Highlighting</h3>
+<div class="paragraph">
+<p>For literals and variable expansions:
+* Highlight the command argument, whether a string literal or a variable expansion. If a variable, highlight as second location the ARG instruction.
+For secret generation:
+* Highlight the entire secret generation command</p>
+</div>
+<hr>
+</div>
+</div>
+</div>

@@ -1,0 +1,84 @@
+<div class="sect1">
+<h2 id="_description">Description</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Various package and software management applications require manual input for execution confirmation by default.
+This confirmation is usually required when installing, updating, or removing programs and packages.
+To execute the command without manual input, a general consent can be given.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_why_is_this_an_issue">Why is this an issue?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>If such a command is part of a script that is executed automatically, the execution is aborted because there is no confirming manual input.
+Instructions, such as installing programs or updating them, cannot be performed in an automated way.
+This applies, among others, to the advanced package tool, 'apt-get'.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_how_to_fix_it">How to fix it</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_code_examples">Code examples</h3>
+<div class="sect3">
+<h4 id="_noncompliant_code_example">Noncompliant code example</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-docker" data-lang="docker">RUN apk add ca-certificates
+RUN apt-get install ca-certificates
+RUN aptitude install ca-certificates</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_compliant_solution">Compliant solution</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-docker" data-lang="docker">RUN apk -y add ca-certificates
+RUN apt-get install -y ca-certificates
+RUN aptitude -y install ca-certificates</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_how_does_this_work">How does this work?</h3>
+<div class="paragraph">
+<p>If the <code>-y</code> flag set, no manual input is expected, and it is assumed that there is general consent.
+For <code>apk</code> and <code>apt-get</code> also the long versions <code>--yes</code> and <code>--assume-yes</code> exist.
+For <code>aptitude</code> also the long version <code>--assume-yes</code> exist.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_resources">Resources</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_documentation">Documentation</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://linux.die.net/man/8/apt-get">apt-get - Linux man page</a></p>
+</li>
+<li>
+<p><a href="https://docs.alpinelinux.org/user-handbook/0.1a/Working/apk.html">apk - Alpine Package Keeper</a></p>
+</li>
+<li>
+<p><a href="https://wiki.debian.org/Aptitude">aptitude - Linux aptitude command</a>
+]</p>
+</li>
+<li>
+<p><a href="https://docs.docker.com/engine/reference/builder/#run">RUN - Docker reference</a></p>
+</li>
+<li>
+<p><a href="https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#run">RUN - Best practices for writing Dockerfiles</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>

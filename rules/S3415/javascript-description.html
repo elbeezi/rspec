@@ -1,0 +1,181 @@
+<div class="sect1">
+<h2 id="_description">Description</h2>
+<div class="sectionbody">
+
+</div>
+</div>
+<div class="sect1">
+<h2 id="_why_is_this_an_issue">Why is this an issue?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Assertions are statements that check whether certain conditions are true. They are used to validate that the actual results of a code snippet match the expected outcomes. By using assertions, developers can ensure that their code behaves as intended and identify potential bugs or issues early in the development process.</p>
+</div>
+<div class="paragraph">
+<p>The convention for passing assertion arguments is to pass the expected value as the first argument and the actual value as the second argument. This convention is based on the idea that the expected value is what the code is supposed to produce, and the actual value is what the code actually produces. By passing the expected value first, it is easier to understand the intent of the assertion and to quickly identify any errors that may be present. Additionally, many testing frameworks and libraries expect assertion arguments to be passed in this order, so following the convention can help ensure that your code works correctly with these tools.</p>
+</div>
+<div class="paragraph">
+<p>This rule raises an issue when the "expected" argument of an assertion function is a hard-coded value and the "actual" argument is not.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">const assert = require('chai').assert;
+const expect = require('chai').expect;
+const should = require('chai').should();
+
+it("inverts arguments", function() {
+    assert.equal(42, aNumber); // Noncompliant: actual value is passed as first argument and expected as second argument
+    expect(42).to.equal(aNumber); // Noncompliant: actual value is passed as first argument and expected as second argument
+    should.fail(42, aNumber);  // Noncompliant: actual value is passed as first argument and expected as second argument
+});</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Swap the order of the assertion arguments so that the expected value is passed as the first argument and the actual value is passed as the second argument.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">const assert = require('chai').assert;
+const expect = require('chai').expect;
+const should = require('chai').should();
+
+it("inverts arguments", function() {
+    assert.equal(aNumber, 42);
+    expect(aNumber).to.equal(42);
+    should.fail(aNumber, 42);
+});</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_resources">Resources</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_documentation">Documentation</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://nodejs.org/api/assert.html">Node.js API - Assert</a></p>
+</li>
+<li>
+<p><a href="https://www.chaijs.com/api/assert">Chai.js - Assert</a></p>
+</li>
+<li>
+<p><a href="https://www.chaijs.com/api/bdd">Chai.js - <code>expect</code> and <code>should</code></a></p>
+</li>
+</ul>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_implementation_specification">Implementation Specification</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>(visible only on this page)</p>
+</div>
+<div class="sect2">
+<h3 id="_message">Message</h3>
+<div class="paragraph">
+<p>If a Chai function gets actual and expected values as arguments:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Swap these 2 arguments so they are in the correct order: actual value, expected value.
+If expect(actual).someMethod(expected) is used:</p>
+</li>
+<li>
+<p>Swap this argument with the one given to "expect".</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_highlighting">Highlighting</h3>
+<div class="paragraph">
+<p>If a Chai function gets actual and expected values as arguments:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Primary: second argument to swap</p>
+</li>
+<li>
+<p>Secondary: first argument to swap</p>
+<div class="ulist">
+<ul>
+<li>
+<p>message: 'Other argument to swap.'</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>If expect(actual).someMethod(expected) is used:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Primary: The argument of the assertion function (ex: "equal")</p>
+</li>
+<li>
+<p>Secondary: The argument given to "expect"</p>
+<div class="ulist">
+<ul>
+<li>
+<p>no message</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_comments_and_links">Comments And Links</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>(visible only on this page)</p>
+</div>
+<div class="sect2">
+<h3 id="_on_24_nov_2015_154114_tamas_vajk_wrote">on 24 Nov 2015, 15:41:14 Tamas Vajk wrote:</h3>
+<div class="paragraph">
+<p>\[~ann.campbell.2] LGTM</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_on_24_nov_2015_161708_freddy_mallet_wrote">on 24 Nov 2015, 16:17:08 Freddy Mallet wrote:</h3>
+<div class="paragraph">
+<p>Hi [~ann.campbell.2], I would make this rule also targeting Java and would associate the tag 'java-top' to it. Thanks</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_on_24_nov_2015_212340_ann_campbell_wrote">on 24 Nov 2015, 21:23:40 Ann Campbell wrote:</h3>
+<div class="paragraph">
+<p>Java targeted &amp; java-top added [~freddy.mallet].</p>
+</div>
+<div class="paragraph">
+<p>CC [~nicolas.peru]</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_on_25_nov_2015_105059_nicolas_peru_wrote">on 25 Nov 2015, 10:50:59 Nicolas Peru wrote:</h3>
+<div class="paragraph">
+<p>\[~ann.campbell.2] No problem for java and java-top but this would need a dedicated example for java. And, IMO, a clear definition of what is a "hardcoded" value : constant ? literal ? both ?</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_on_30_nov_2015_170455_ann_campbell_wrote">on 30 Nov 2015, 17:04:55 Ann Campbell wrote:</h3>
+<div class="paragraph">
+<p>\[~nicolas.peru] I&#8217;d start with literals and locally-defined (class or method level) vars.</p>
+</div>
+</div>
+</div>
+</div>

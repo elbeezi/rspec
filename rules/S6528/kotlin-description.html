@@ -1,0 +1,96 @@
+<div class="sect1">
+<h2 id="_description">Description</h2>
+<div class="sectionbody">
+
+</div>
+</div>
+<div class="sect1">
+<h2 id="_why_is_this_an_issue">Why is this an issue?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When <code>find()</code> is used to check the presence of an element that matches a given predicate,
+but the actual object returned by <code>find</code> is not relevant,
+it should be replaced with one of the functions <code>any()</code>, <code>none()</code> or <code>contains()</code>.</p>
+</div>
+<div class="sect2">
+<h3 id="_what_is_the_potential_impact">What is the potential impact?</h3>
+<div class="sect3">
+<h4 id="_readability_and_understanding">Readability and Understanding</h4>
+<div class="paragraph">
+<p>This change makes the code more concise and easier to understand.
+The additional comparison operator would increase the complexity of the expression
+while not offering any benefit.
+The function names <code>any</code>, <code>none</code> and <code>contains</code> are descriptive on the other hand,
+so it is evident to readers what the purpose of the expression is.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_how_to_fix_it">How to fix it</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Replace</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>find(predicate) != null</code> or <code>findLast(predicate) != null</code> with <code>any(predicate)</code>.</p>
+</li>
+<li>
+<p><code>find(predicate) == null</code> or <code>findLast(predicate) == null</code> with <code>none(predicate)</code>.</p>
+</li>
+<li>
+<p><code>find {it == element} != null</code> or <code>findLast {it == element} != null</code> with <code>contains(element)</code>.</p>
+</li>
+<li>
+<p><code>find {it == element} == null</code> or <code>findLast {it == element} == null</code> with <code>!contains(element)</code>.</p>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="_code_examples">Code examples</h3>
+<div class="sect3">
+<h4 id="_noncompliant_code_example">Noncompliant code example</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">val list = listOf(5,2,9,6,8,2,5,7,3)</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">val hasElemenentsGreater5 = list.find { it &gt; 5 } != null // Noncompliant
+val hasElemenent5 = list.find { it == 5 } != null // Noncompliant
+val hasNoElementsGreater5 = list.findLast { it &gt; 5 } == null // Noncompliant</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_compliant_solution">Compliant solution</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-kotlin" data-lang="kotlin">val hasElemenentsGreater5 = list.any { it &gt; 5 } // Compliant
+val hasElemenent5 = list.contains(5) // Compliant
+val hasNoElementsGreater5 = list.none { it &gt; 5 } // Compliant</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_resources">Resources</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_documentation">Documentation</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/">Kotlin API Docs, Package kotlin.collections</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>

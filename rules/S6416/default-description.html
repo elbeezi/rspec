@@ -1,0 +1,50 @@
+<div class="sect1">
+<h2 id="_description">Description</h2>
+<div class="sectionbody">
+
+</div>
+</div>
+<div class="sect1">
+<h2 id="_why_is_this_an_issue">Why is this an issue?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>It is common for methods to check the value of their parameters or the state of
+their associated object and throw an exception when one of them does not match a
+given condition.
+Those conditions are usually mentioned in the javadoc of the method.</p>
+</div>
+<div class="paragraph">
+<p>This rule raises an issue when it detects that a method call will trigger one of
+the following exceptions:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>java.lang.IllegalArgumentException</code>,</p>
+</li>
+<li>
+<p><code>java.lang.IllegalStateException</code>.</p>
+</li>
+</ul>
+</div>
+<div class="sect2">
+<h3 id="_noncompliant_code_example">Noncompliant code example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">  private void addFirst(Collection&lt;String&gt; collection, String element) {
+    if (collection instanceof List) {
+      ((List&lt;String&gt;) collection).add(0, element);
+    } else {
+      throw new IllegalArgumentException();
+    }
+  }
+
+  public void caller() {
+    // Noncompliant: triggers an IllegalArgumentException because HashSet doesn't implement List
+    addFirst(new HashSet&lt;&gt;(), "hello");
+  }</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>

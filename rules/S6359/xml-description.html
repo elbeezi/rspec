@@ -1,0 +1,84 @@
+<div class="sect1">
+<h2 id="_description">Description</h2>
+<div class="sectionbody">
+
+</div>
+</div>
+<div class="sect1">
+<h2 id="_why_is_this_an_issue">Why is this an issue?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Defining a custom permission in the <code>android.permission</code> namespace may result in an unexpected permission assignment if a newer version of Android adds a permission with the same name. It is recommended to use a namespace specific to the application for custom permissions.</p>
+</div>
+<div class="sect2">
+<h3 id="_noncompliant_code_example">Noncompliant code example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.organization.app"&gt;
+
+    &lt;permission
+        android:name="android.permission.MYPERMISSION" /&gt; &lt;!-- Noncompliant --&gt;
+
+&lt;/manifest&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_compliant_solution">Compliant solution</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version="1.0" encoding="utf-8"?&gt;
+&lt;manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.organization.app"&gt;
+
+    &lt;permission
+        android:name="com.organization.app.permission.MYPERMISSION" /&gt;
+
+&lt;/manifest&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_resources">Resources</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://mobile-security.gitbook.io/masvs/security-requirements/0x11-v6-interaction_with_the_environment">Mobile AppSec Verification Standard</a> - Platform Interaction Requirements</p>
+</li>
+<li>
+<p><a href="https://owasp.org/www-project-mobile-top-10/2016-risks/m1-improper-platform-usage">OWASP Mobile Top 10 2016 Category M1</a> - Improper Platform Usage</p>
+</li>
+<li>
+<p><a href="https://cwe.mitre.org/data/definitions/265">MITRE, CWE-265</a> - Privilege Issues</p>
+</li>
+<li>
+<p><a href="https://cwe.mitre.org/data/definitions/732">MITRE, CWE-732</a> - Incorrect Permission Assignment for Critical Resource</p>
+</li>
+<li>
+<p><a href="https://developer.android.com/guide/topics/permissions/defining">developer.android.com</a> - Define a Custom App Permission</p>
+</li>
+</ul>
+</div>
+<hr>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_implementation_specification">Implementation Specification</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>(visible only on this page)</p>
+</div>
+<div class="sect2">
+<h3 id="_message">Message</h3>
+<div class="paragraph">
+<p>Use a different namespace for the 'xxx' permission.</p>
+</div>
+<hr>
+</div>
+</div>
+</div>

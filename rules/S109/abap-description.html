@@ -1,0 +1,96 @@
+<div class="sect1">
+<h2 id="_description">Description</h2>
+<div class="sectionbody">
+
+</div>
+</div>
+<div class="sect1">
+<h2 id="_why_is_this_an_issue">Why is this an issue?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A magic number is a number that comes out of nowhere, and is directly used in a statement. Magic numbers are often used, for instance to limit the number of iterations of a loop, to test the value of a property, etc.</p>
+</div>
+<div class="paragraph">
+<p>Using magic numbers may seem obvious and straightforward when you&#8217;re writing a piece of code, but they are much less obvious and straightforward at debugging time.</p>
+</div>
+<div class="paragraph">
+<p>That is why magic numbers must be demystified by first being assigned to clearly named variables before being used.</p>
+</div>
+<div class="paragraph">
+<p>-1, 0 and 1 are not considered magic numbers.</p>
+</div>
+<div class="sect2">
+<h3 id="_noncompliant_code_example">Noncompliant code example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-abap" data-lang="abap">IF sy-subrc EQ 42.
+  screen-request = 45.
+ENDIF.</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_compliant_solution">Compliant solution</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-abap" data-lang="abap">answer = 42.
+IF sy-subrc EQ answer.
+  screen-request = 45.
+ENDIF.</code></pre>
+</div>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_implementation_specification">Implementation Specification</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>(visible only on this page)</p>
+</div>
+<div class="sect2">
+<h3 id="_message">Message</h3>
+<div class="paragraph">
+<p>Assign this magic number X to a well-named (variable|constant), and use the (variable|constant) instead.</p>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_comments_and_links">Comments And Links</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>(visible only on this page)</p>
+</div>
+<div class="sect2">
+<h3 id="_is_duplicated_by_s1977">is duplicated by: <a data-rspec-id="S1977" class="rspec-auto-link">S1977</a></h3>
+
+</div>
+<div class="sect2">
+<h3 id="_relates_to_s6164">relates to: <a data-rspec-id="S6164" class="rspec-auto-link">S6164</a></h3>
+
+</div>
+<div class="sect2">
+<h3 id="_is_related_to_s2480">is related to: <a data-rspec-id="S2480" class="rspec-auto-link">S2480</a></h3>
+
+</div>
+<div class="sect2">
+<h3 id="_is_related_to_s1583">is related to: <a data-rspec-id="S1583" class="rspec-auto-link">S1583</a></h3>
+
+</div>
+<div class="sect2">
+<h3 id="_on_4_nov_2013_091654_freddy_mallet_wrote">on 4 Nov 2013, 09:16:54 Freddy Mallet wrote:</h3>
+<div class="paragraph">
+<p>Is implemented by https://jira.codehaus.org/browse/SONARJAVA-130</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_on_28_apr_2014_085008_dinesh_bolkensteyn_wrote">on 28 Apr 2014, 08:50:08 Dinesh Bolkensteyn wrote:</h3>
+<div class="paragraph">
+<p>In COBOL, this rule has been dropped in favor of "String literals should not be duplicated", see http://jira.sonarsource.com/browse/COBOL-997</p>
+</div>
+</div>
+</div>
+</div>

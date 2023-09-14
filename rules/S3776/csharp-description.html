@@ -1,0 +1,136 @@
+<div class="sect1">
+<h2 id="_description">Description</h2>
+<div class="sectionbody">
+
+</div>
+</div>
+<div class="sect1">
+<h2 id="_why_is_this_an_issue">Why is this an issue?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><a href="https://www.sonarsource.com/docs/CognitiveComplexity.pdf">Cognitive Complexity</a> Complexity is a measure of how hard the control flow of a method is to understand.</p>
+</div>
+<div class="paragraph">
+<p>Methods with high Cognitive Complexity will be difficult to maintain.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-csharp" data-lang="csharp">int Abs(int n) // Noncompliant: cognitive complexity = 5
+{
+    if (n &gt;= 0)   // +1
+    {
+        return n;
+    }
+    else          // +2, due to nesting
+    {
+        if (n == int.MinValue)  // +1
+        {
+            throw new ArgumentException("The absolute value of int.MinValue is outside of int boundaries");
+        }
+        else                    // +1
+        {
+            return -n;
+        }
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>They should be refactored to have lower complexity:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-csharp" data-lang="csharp">int Abs(int n) // Compliant: cognitive complexity = 3
+{
+    if (n == int.MinValue)  // +1
+    {
+        throw new ArgumentException("The absolute value of int.MinValue is outside of int boundaries");
+    }
+    else if (n &gt;= 0)        // +1
+    {
+        return n;
+    }
+    else                    // +1
+    {
+        return -n;
+    }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_resources">Resources</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_documentation">Documentation</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://www.sonarsource.com/docs/CognitiveComplexity.pdf">Cognitive Complexity</a></p>
+</li>
+</ul>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_implementation_specification">Implementation Specification</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>(visible only on this page)</p>
+</div>
+<div class="sect2">
+<h3 id="_message">Message</h3>
+<div class="paragraph">
+<p>Refactor this {0} to reduce its Cognitive Complexity from {1} to the {2} allowed.</p>
+</div>
+<div class="paragraph">
+<p>Where {0} is the name of the syntax being analyzed, {1} is the cognitive complexity and {2} is the maximum authorized complexity.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_parameters">Parameters</h3>
+<div class="sidebarblock">
+<div class="content">
+<div class="title">threshold</div>
+<div class="listingblock">
+<div class="content">
+<pre>15</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The maximum authorized complexity.</p>
+</div>
+</div>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="title">propertyThreshold</div>
+<div class="listingblock">
+<div class="content">
+<pre>3</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The maximum authorized complexity in a property.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_highlighting">Highlighting</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>primary: Method/function name</p>
+</li>
+<li>
+<p>secondary: Keywords &amp; operators that cause increments</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>

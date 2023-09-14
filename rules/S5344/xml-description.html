@@ -1,0 +1,116 @@
+<div class="sect1">
+<h2 id="_description">Description</h2>
+<div class="sectionbody">
+
+</div>
+</div>
+<div class="sect1">
+<h2 id="_why_is_this_an_issue">Why is this an issue?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A user password should never be stored in clear-text, instead a hash should be produced from it using a secure algorithm:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>not vulnerable to <code>brute force attacks</code>.</p>
+</li>
+<li>
+<p>not vulnerable to <code>collision attacks</code> (see rule s4790).</p>
+</li>
+<li>
+<p>and a salt should be added to the password to lower the risk of <code>rainbow table attacks</code> (see rule s2053).</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>This rule raises an issue when a password is stored in clear-text or with a hash algorithm vulnerable to <code>bruce force attacks</code>. These algorithms, like <code>md5</code> or <code>SHA-family</code>  functions are fast to compute the hash and therefore brute force attacks are possible (it&#8217;s easier to exhaust the entire space of all possible passwords) especially with hardware like GPU, FPGA or ASIC. Modern password hashing algorithms such as <code>bcrypt</code>, <code>PBKDF2</code> or <code>argon2</code> are recommended.</p>
+</div>
+<div class="sect2">
+<h3 id="_noncompliant_code_example">Noncompliant code example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;configuration&gt;
+  &lt;system.web&gt;
+    &lt;authentication mode="Forms"&gt;
+      &lt;forms name="customer_login" timeout="30" loginUrl="~/Login.aspx"&gt;
+        &lt;credentials passwordFormat="Clear"&gt; &lt;!-- Noncompliant --&gt;
+          &lt;user name="admin" password="password" /&gt;
+        &lt;/credentials&gt;
+      &lt;/forms&gt;
+    &lt;/authentication&gt;
+  &lt;/system.web&gt;
+&lt;/configuration&gt;</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_compliant_solution">Compliant solution</h3>
+<div class="paragraph">
+<p>This form of authentication does not support any secure format, thus its use
+is highly discouraged.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_resources">Resources</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>OWASP - <a href="https://owasp.org/Top10/A02_2021-Cryptographic_Failures/">Top 10 2021 Category A2 - Cryptographic Failures</a></p>
+</li>
+<li>
+<p>OWASP - <a href="https://owasp.org/Top10/A04_2021-Insecure_Design/">Top 10 2021 Category A4 - Insecure Design</a></p>
+</li>
+<li>
+<p>OWASP - <a href="https://owasp.org/www-project-top-ten/2017/A3_2017-Sensitive_Data_Exposure">Top 10 2017 Category A3 - Sensitive Data Exposure</a></p>
+</li>
+<li>
+<p>CWE - <a href="https://cwe.mitre.org/data/definitions/256">256 - Plaintext Storage of a Password</a></p>
+</li>
+<li>
+<p>CWE - <a href="https://cwe.mitre.org/data/definitions/916">916 - Use of Password Hash With Insufficient Computational Effort</a></p>
+</li>
+<li>
+<p>SANS - <a href="https://www.sans.org/top25-software-errors/#cat3">Top 25 - Porous Defenses</a></p>
+</li>
+<li>
+<p>OWASP CheatSheet - <a href="https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html">Password Storage Cheat Sheet</a></p>
+</li>
+<li>
+<p>Microsoft Learn - <a href="https://learn.microsoft.com/en-us/previous-versions/dotnet/netframework-4.0/e01fc50a%28v%3Dvs.100%29">credentials Element for forms for authentication</a></p>
+</li>
+</ul>
+</div>
+<hr>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_implementation_specification">Implementation Specification</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>(visible only on this page)</p>
+</div>
+<div class="sect2">
+<h3 id="_message">Message</h3>
+<div class="paragraph">
+<p>Use a secure password hashing algorithm.</p>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_comments_and_links">Comments And Links</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>(visible only on this page)</p>
+</div>
+<div class="sect2">
+<h3 id="_deprecates_s2070">deprecates: <a data-rspec-id="S2070" class="rspec-auto-link">S2070</a></h3>
+
+</div>
+</div>
+</div>

@@ -1,0 +1,100 @@
+<div class="sect1">
+<h2 id="_description">Description</h2>
+<div class="sectionbody">
+
+</div>
+</div>
+<div class="sect1">
+<h2 id="_why_is_this_an_issue">Why is this an issue?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In JavaScript, props are typically passed as plain objects, which can lead to errors and confusion when working with components that have specific prop requirements. However, it lacks of type safety and clarity when passing props to components in a codebase.</p>
+</div>
+<div class="paragraph">
+<p>By defining types for component props, developers can enforce type safety and provide clear documentation for the expected props of a component. This helps catch potential errors at compile-time. It also improves code maintainability by making it easier to understand how components should be used and what props they accept.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">import PropTypes from 'prop-types';
+
+function Hello({ firstname, lastname }) {
+  return &lt;div&gt;Hello {firstname} {lastname}&lt;/div&gt;; // Noncompliant: 'lastname' type is missing
+}
+Hello.propTypes = {
+  firstname: PropTypes.string.isRequired
+};
+
+// Or in ES6
+
+class Hello extends React.Component {
+  render() {
+    return &lt;div&gt;Hello {firstname} {lastname}&lt;/div&gt;; // Noncompliant: 'lastname' type is missing
+  }
+}
+Hello.propTypes = {
+  firstname: PropTypes.string.isRequired,
+};</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">import PropTypes from 'prop-types';
+
+function Hello({ firstname, lastname }) {
+  return &lt;div&gt;Hello {firstname} {lastname}&lt;/div&gt;;
+}
+Hello.propTypes = {
+  firstname: PropTypes.string.isRequired,
+  lastname: PropTypes.string.isRequired,
+};
+
+// Or in ES6
+
+class Hello extends React.Component {
+  render() {
+    return &lt;div&gt;Hello {firstname} {lastname}&lt;/div&gt;;
+  }
+}
+Hello.propTypes = {
+  firstname: PropTypes.string.isRequired,
+  lastname: PropTypes.string.isRequired,
+};</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Alternatively, you can use TypeScript or Flow.js to validate your prop types statically.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-javascript" data-lang="javascript">type Props {
+  firstname: string;
+  lastname: string;
+}
+function Hello({ firstname, lastname }: Props) {
+  return &lt;div&gt;Hello {firstname} {lastname}&lt;/div&gt;;
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_resources">Resources</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_documentation">Documentation</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://react.dev/reference/react/Component#static-proptypes">React - static propTypes</a></p>
+</li>
+<li>
+<p><a href="https://react.dev/learn/typescript#typescript-with-react-components">React - TypeScript with React Components</a></p>
+</li>
+<li>
+<p><a href="https://flow.org/en/docs/react/">Flow.js - React</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>

@@ -1,0 +1,146 @@
+<div class="sect1">
+<h2 id="_description">Description</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Secret leaks often occur when a sensitive piece of authentication data is
+stored with the source code of an application. Considering the source code is
+intended to be deployed across multiple assets, including source code
+repositories or application hosting servers, the secrets might get exposed to an
+unintended audience.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_why_is_this_an_issue">Why is this an issue?</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In most cases, trust boundaries are violated when a secret is exposed in a
+source code repository or an uncontrolled deployment environment.
+Unintended people who don&#8217;t need to know the secret might get access to it. They
+might then be able to use it to gain unwanted access to associated services or
+resources.</p>
+</div>
+<div class="paragraph">
+<p>The trust issue can be more or less severe depending on the people&#8217;s role and
+entitlement.</p>
+</div>
+<div class="paragraph">
+<p>If an attacker gains access to a Typeform personal access token, they might be able to compromise the data that is accessible to the linked Typeform account. By doing so, it might be possible for customer data to be leaked by the attacker.</p>
+</div>
+<div class="sect2">
+<h3 id="_what_is_the_potential_impact">What is the potential impact?</h3>
+<div class="paragraph">
+<p>Below are some real-world scenarios that illustrate some impacts of an attacker
+exploiting the secret.</p>
+</div>
+<div class="sect3">
+<h4 id="_breach_of_trust_in_non_repudiation_and_disruption_of_the_audit_trail">Breach of trust in non-repudiation and disruption of the audit trail</h4>
+<div class="paragraph">
+<p>When such a secret is compromised, malicious actors might have the possibility
+to send malicious event objects, causing discrepancies in the audit trail. This
+can make it difficult to trace and verify the sequence of events, impacting the
+ability to investigate and identify unauthorized or fraudulent activity.</p>
+</div>
+<div class="paragraph">
+<p>All in all, this can lead to problems in proving the validity of transactions
+or actions performed, potentially leading to disputes and legal complications.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_financial_loss">Financial loss</h4>
+<div class="paragraph">
+<p>Since this secret is used to process transaction-related operations, financial
+loss may also occur if transaction-related objects are corrupted or the account
+is tampered with.<br>
+This can range from indirect losses to direct unauthorized transfers of funds
+that can lead to bankruptcy or impoverishment of individuals.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_how_to_fix_it">How to fix it</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>Revoke the secret</strong></p>
+</div>
+<div class="paragraph">
+<p>Revoke any leaked secrets and remove them from the application source code.</p>
+</div>
+<div class="paragraph">
+<p>Before revoking the secret, ensure that no other applications or processes is
+using it. Other usages of the secret will also be impacted when the secret is
+revoked.</p>
+</div>
+<div class="paragraph">
+<p><strong>Use a secret vault</strong></p>
+</div>
+<div class="paragraph">
+<p>A secret vault should be used to generate and store the new secret. This
+will ensure the secret&#8217;s security and prevent any further unexpected disclosure.</p>
+</div>
+<div class="paragraph">
+<p>Depending on the development platform and the leaked secret type, multiple
+solutions are currently available.</p>
+</div>
+<div class="sect2">
+<h3 id="_code_examples">Code examples</h3>
+<div class="sect3">
+<h4 id="_noncompliant_code_example">Noncompliant code example</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-python" data-lang="python">import requests
+
+token = 'tfp_DEueEgDipkmx52r7rgU5EC7VC5K2MzzsR61ELEkqmh3Y_3mJqwKJ2vtfX5N'  # Noncompliant
+response = requests.get('https://api.typeform.com/forms', headers={
+    'Authorization': f'Bearer {token}',
+    'Content-Type': 'application/json'
+})</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_compliant_solution">Compliant solution</h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-python" data-lang="python">import requests
+
+token = os.getenv('TYPEFORM_PERSONAL_ACCESS_TOKEN')
+response = requests.get('https://api.typeform.com/forms', headers={
+    'Authorization': f'Bearer {token}',
+    'Content-Type': 'application/json'
+})</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_resources">Resources</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_documentation">Documentation</h3>
+<div class="paragraph">
+<p>Typeform Developers - <a href="https://www.typeform.com/developers/get-started/personal-access-token/#regenerate-your-personal-access-token">Regenerate your personal access token</a></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_standards">Standards</h3>
+<div class="ulist">
+<ul>
+<li>
+<p>MITRE - <a href="https://cwe.mitre.org/data/definitions/798">CWE-798 - Use of Hard-coded Credentials</a></p>
+</li>
+<li>
+<p>MITRE - <a href="https://cwe.mitre.org/data/definitions/259">CWE-259 - Use of Hard-coded Password</a></p>
+</li>
+<li>
+<p>SANS - <a href="https://www.sans.org/top25-software-errors/#cat3">TOP 25 Most Dangerous Software Errors</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
